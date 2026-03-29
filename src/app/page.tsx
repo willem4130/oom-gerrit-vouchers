@@ -37,25 +37,25 @@ const categories = [
 
 const featuredVouchers = [
   {
-    title: '€10 korting op lunch menu',
-    business: 'De Groene Weide',
-    city: 'Valkenburg',
-    discount: '€10',
+    title: '€15 korting op 3-gangen Share Menu',
+    business: "Eterij 't Raedthuys",
+    city: 'Doetinchem',
+    discount: '€15',
     label: 'korting',
     gradient: 'from-amber-500 to-orange-600',
   },
   {
-    title: '2e biertje gratis',
-    business: '\'t Gezellige Hoekje',
-    city: 'Roermond',
+    title: '2e persoon gratis bij klimbos',
+    business: 'Klimbos Ruurlo',
+    city: 'Ruurlo',
     discount: '2e',
     label: 'gratis',
-    gradient: 'from-orange-500 to-red-500',
+    gradient: 'from-emerald-500 to-green-600',
   },
   {
-    title: '20% korting op massage',
-    business: 'Wellness Retreat Limburg',
-    city: 'Maastricht',
+    title: '20% korting op dagentree',
+    business: 'Wellness de Bronsbergen',
+    city: 'Zutphen',
     discount: '20%',
     label: 'korting',
     gradient: 'from-teal-500 to-cyan-600',
@@ -63,9 +63,9 @@ const featuredVouchers = [
 ]
 
 const navLinks = [
-  { href: '/vouchers', label: 'Bonnen' },
-  { href: '/about', label: 'Over ons' },
-  { href: '/business/register', label: 'Voor ondernemers' },
+  { href: '/business/vouchers', label: 'Mijn bonnen' },
+  { href: '/admin/businesses', label: 'Admin' },
+  { href: '/register/business', label: 'Voor ondernemers' },
 ]
 
 export default function Home() {
@@ -223,7 +223,7 @@ export default function Home() {
               </div>
               <div>
                 <p className="text-base font-semibold">Oom Gerrit</p>
-                <p className="text-[11px] text-muted-foreground">Plattelandsbonnen</p>
+                <p className="text-[11px] text-muted-foreground">De beste tips van 't platteland</p>
               </div>
             </Link>
 
@@ -236,12 +236,12 @@ export default function Home() {
             </div>
 
             <div className="hidden items-center gap-3 md:flex">
-              <Link href="/login">
-                <Button variant="ghost" size="sm">Inloggen</Button>
+              <Link href="/admin/businesses">
+                <Button variant="ghost" size="sm">Admin</Button>
               </Link>
-              <Link href="/register">
+              <Link href="/business/vouchers">
                 <Button size="sm" className="shadow-lg shadow-primary/25">
-                  Registreren
+                  Mijn bonnen
                 </Button>
               </Link>
             </div>
@@ -265,11 +265,11 @@ export default function Home() {
                     </Link>
                   ))}
                   <div className="mt-4 flex flex-col gap-2 border-t pt-4">
-                    <Link href="/login" onClick={() => setMobileMenuOpen(false)}>
-                      <Button variant="outline" className="w-full">Inloggen</Button>
+                    <Link href="/admin/businesses" onClick={() => setMobileMenuOpen(false)}>
+                      <Button variant="outline" className="w-full">Admin</Button>
                     </Link>
-                    <Link href="/register" onClick={() => setMobileMenuOpen(false)}>
-                      <Button className="w-full">Registreren</Button>
+                    <Link href="/business/vouchers" onClick={() => setMobileMenuOpen(false)}>
+                      <Button className="w-full">Mijn bonnen</Button>
                     </Link>
                   </div>
                 </nav>
@@ -311,18 +311,18 @@ export default function Home() {
                 </span>
                 <br />
                 <span className="inline-block bg-gradient-to-r from-emerald-600 via-green-600 to-teal-600 bg-clip-text text-transparent">
-                  het platteland
+                  de Achterhoek
                 </span>
               </h1>
             </div>
             <p className="hero-sub mx-auto mt-5 max-w-2xl text-lg text-gray-700 text-balance md:text-xl">
-              Oom Gerrit kent alle verborgen parels bij jou in de buurt. Van gezellige restaurants
-              en bruine kroegen tot wellness en buitenactiviteiten.
+              Van Winterswijk tot Zutphen, van Groenlo tot Doetinchem — Oom Gerrit kent
+              de lekkerste restaurants, gezelligste kroegen en mooiste plekjes in de Achterhoek.
             </p>
 
             <div className="hero-cta mt-10 flex flex-col gap-4 sm:flex-row">
               <Link
-                href="/vouchers"
+                href="/business/vouchers"
                 className="glossy-btn flex items-center gap-2 rounded-xl px-8 py-4 text-lg font-medium hover:scale-105 transition-transform"
               >
                 <Search className="h-5 w-5" />
@@ -330,7 +330,7 @@ export default function Home() {
                 <ArrowRight className="h-5 w-5" />
               </Link>
               <Link
-                href="/business/register"
+                href="/register/business"
                 className="flex items-center gap-2 rounded-xl border-2 border-gray-300 bg-white/70 backdrop-blur-sm px-8 py-4 text-lg font-medium hover:border-gray-400 hover:bg-white/90 transition-colors"
               >
                 Ondernemer? Meld je aan
@@ -344,7 +344,7 @@ export default function Home() {
       <section data-section="categories" className="container mx-auto px-4 pb-20">
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
           {categories.map((cat) => (
-            <Link key={cat.slug} href={`/vouchers?categorie=${cat.slug}`} data-animate="cat">
+            <Link key={cat.slug} href="/business/vouchers" data-animate="cat">
               <div className="glossy-card group cursor-pointer text-left hover:scale-[1.03] transition-transform">
                 <div className={`mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br ${cat.gradient}`}>
                   <cat.icon className="h-6 w-6 text-white" />
@@ -364,13 +364,13 @@ export default function Home() {
             <h2 className="text-3xl font-bold md:text-4xl">Bonnen in de kijker</h2>
             <p className="mt-2 text-muted-foreground">Een greep uit de aanbiedingen van lokale ondernemers.</p>
           </div>
-          <Link href="/vouchers" className="hidden text-sm font-medium text-primary hover:underline md:block">
+          <Link href="/business/vouchers" className="hidden text-sm font-medium text-primary hover:underline md:block">
             Alle bonnen &rarr;
           </Link>
         </div>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {featuredVouchers.map((v) => (
-            <Link key={v.title} href="/vouchers" data-animate="voucher">
+            <Link key={v.title} href="/business/vouchers" data-animate="voucher">
               <div className="glass group cursor-pointer overflow-hidden rounded-2xl transition-shadow duration-300 hover:shadow-2xl hover:scale-[1.02] transition-transform">
                 <div className={`h-1.5 bg-gradient-to-r ${v.gradient}`} />
                 <div className="p-6">
@@ -394,7 +394,7 @@ export default function Home() {
           ))}
         </div>
         <div className="mt-6 md:hidden">
-          <Link href="/vouchers">
+          <Link href="/business/vouchers">
             <Button variant="outline" className="w-full">Alle bonnen bekijken</Button>
           </Link>
         </div>
@@ -452,7 +452,7 @@ export default function Home() {
                 </p>
                 <div className="mt-8">
                   <Link
-                    href="/business/register"
+                    href="/register/business"
                     className="glossy-btn inline-flex items-center gap-2 rounded-xl px-8 py-4 text-lg font-medium hover:scale-105 transition-transform"
                   >
                     Gratis aanmelden
@@ -489,13 +489,13 @@ export default function Home() {
             <div>
               <span className="text-sm font-medium">Oom Gerrit</span>
               <span className="mx-2 text-gray-300">—</span>
-              <span className="text-sm text-muted-foreground">Jouw gids voor het platteland</span>
+              <span className="text-sm text-muted-foreground">Proef, beleef en geniet van de Achterhoek</span>
             </div>
           </div>
           <nav className="flex gap-6 text-sm text-muted-foreground">
-            <Link href="/vouchers" className="hover:text-foreground transition-colors">Bonnen</Link>
-            <Link href="/about" className="hover:text-foreground transition-colors">Over ons</Link>
-            <Link href="/business/register" className="hover:text-foreground transition-colors">Voor ondernemers</Link>
+            <Link href="/business/vouchers" className="hover:text-foreground transition-colors">Mijn bonnen</Link>
+            <Link href="/admin/businesses" className="hover:text-foreground transition-colors">Admin</Link>
+            <Link href="/register/business" className="hover:text-foreground transition-colors">Voor ondernemers</Link>
           </nav>
           <p className="text-xs text-muted-foreground">&copy; 2026 Oom Gerrit</p>
         </div>

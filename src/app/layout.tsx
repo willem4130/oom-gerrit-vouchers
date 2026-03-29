@@ -9,8 +9,8 @@ import { Toaster } from '@/components/ui/sonner'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Oom Gerrit | Plattelandsbonnen - Ontdek het beste van het platteland',
-  description: 'Ontdek de leukste deals op het Nederlandse platteland. Oom Gerrit kent de beste restaurants, bars, wellness en activiteiten bij jou in de buurt. Gratis bonnen!',
+  title: 'Oom Gerrit | Ontdek het beste van de Achterhoek',
+  description: 'Gratis kortingsbonnen voor restaurants, cafés, wellness, overnachtingen en activiteiten in de Achterhoek. Van Winterswijk tot Zutphen — Oom Gerrit kent de beste plekjes.',
 }
 
 export default function RootLayout({
