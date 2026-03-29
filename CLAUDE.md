@@ -1,6 +1,7 @@
-# Oom Gerrit Voucher System
+# Plattelandsbon (Oom Gerrit)
 
-Dutch rural tourism voucher platform connecting businesses with consumers, featuring AI-powered recommendations and competitor analysis.
+Dutch rural tourism voucher web app — consumer browse/claim + business management + admin approval.
+Part of the "Oom Gerrit" brand. This is a standalone git repo at `~/Dev/oomgerrit/plattelandsbon/`.
 
 ## Architecture: Onion Architecture (Strict)
 
@@ -199,6 +200,7 @@ NextAuth is NOT wired yet. Dev auth bypass in `src/server/api/trpc.ts`:
 
 ## Project Status
 
+**GitHub**: https://github.com/willem4130/plattelandsbon
 **Deployment**: Vercel (https://oomgerrit.vercel.app) + Neon Postgres (EU Frankfurt)
 **Current Phase**: Week 3 complete, landing page + detail pages done (March 2026)
 **References**: `PROJECT_PLAN.md` (implementation roadmap), `RESEARCH.md` (validated stack)

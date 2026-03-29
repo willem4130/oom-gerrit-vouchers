@@ -1,5 +1,5 @@
 {
-  "name": "oom-gerrit-vouchers",
+  "name": "plattelandsbon",
   "version": "0.1.0",
   "description": "Oom Gerrit Voucher System (Plattelandsbon) - Dutch rural tourism voucher platform with AI-powered recommendations",
   "keywords": [
@@ -13,12 +13,12 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/willem4130/oom-gerrit-vouchers.git"
+    "url": "https://github.com/willem4130/plattelandsbon.git"
   },
   "bugs": {
-    "url": "https://github.com/willem4130/oom-gerrit-vouchers/issues"
+    "url": "https://github.com/willem4130/plattelandsbon/issues"
   },
-  "homepage": "https://github.com/willem4130/oom-gerrit-vouchers#readme",
+  "homepage": "https://github.com/willem4130/plattelandsbon#readme",
   "author": "Willem van den Berg",
   "scripts": {
     "dev": "next dev --turbopack",

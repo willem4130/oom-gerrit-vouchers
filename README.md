@@ -1,4 +1,4 @@
-# Oom Gerrit Voucher System (Plattelandsbon)
+# Plattelandsbon (Oom Gerrit)
 
 Dutch rural tourism voucher platform connecting businesses with consumers, featuring AI-powered recommendations and competitor analysis.
 
@@ -169,7 +169,7 @@ This will run quality checks, create a commit, and push to the repository.
 
 ## Links
 
-- **GitHub**: https://github.com/willem4130/oom-gerrit-vouchers
+- **GitHub**: https://github.com/willem4130/plattelandsbon
 - **Planning Docs**: See `CLAUDE.md` and `PROJECT_PLAN.md`
 
 ## License
