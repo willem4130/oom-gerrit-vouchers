@@ -1,3 +1,6 @@
+import Link from 'next/link'
+import { TreePine } from 'lucide-react'
+
 export default function AuthLayout({
   children,
 }: {
@@ -7,7 +10,10 @@ export default function AuthLayout({
     <div className="min-h-screen">
       <nav className="border-b bg-background">
         <div className="container mx-auto flex h-16 items-center px-4">
-          <h1 className="text-xl font-bold">Iconic Website - Dashboard</h1>
+          <Link href="/" className="flex items-center gap-2">
+            <TreePine className="h-6 w-6 text-primary" />
+            <span className="text-xl font-bold">Oom Gerrit</span>
+          </Link>
         </div>
       </nav>
       <main className="container mx-auto p-4">{children}</main>

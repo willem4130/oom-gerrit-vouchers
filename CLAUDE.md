@@ -96,7 +96,7 @@ class PrismaBusinessRepo extends BaseRepository<Business, PrismaRecord> implemen
 
 ## Tech Stack
 
-Next.js 16, React 19, TypeScript 5.9, PostgreSQL, Prisma 6, NextAuth v5, tRPC v11, Tailwind CSS 4, shadcn/ui, Anthropic AI SDK, Resend, Vercel Blob, Upstash Redis
+Next.js 16, React 19, TypeScript 5.9, PostgreSQL, Prisma 6, NextAuth v5, tRPC v11, Tailwind CSS 4, shadcn/ui, GSAP + @gsap/react (scroll animations), Anthropic AI SDK, Resend, Vercel Blob, Upstash Redis
 
 See `RESEARCH.md` for validated versions and configuration details.
 
@@ -113,6 +113,7 @@ See `RESEARCH.md` for validated versions and configuration details.
 - Components → `src/components/`, organized by feature
 - UI components → `src/components/ui/` (shadcn)
 - Shared utilities → `src/lib/`
+- Static images → `public/images/`
 - Database schema → `prisma/schema.prisma`
 
 ### Modularity Principles
@@ -138,7 +139,29 @@ If changes require server restart:
 2. Read server output/logs
 3. Fix ALL warnings/errors
 
+## Design System
+
+**Brand colors** (globals.css CSS variables):
+- Primary: Meadow green `HSL(142, 45%, 32%)` — nature/rural
+- Accent: Harvest amber `HSL(36, 80%, 94%)` — warmth/gezellig
+
+**CSS utilities** (globals.css `@layer utilities`):
+- `.glass` — Glassmorphism: `bg-white/70 backdrop-blur-md border-white/30 shadow-xl`
+- `.glass-subtle` — Lighter glass variant
+- `.glossy-card` — Glass card with hover shadow transition
+- `.glossy-btn` — Gradient white button with shadow
+
+**Animations** (GSAP + ScrollTrigger):
+- Landing page uses `useGSAP` hook with `gsap.fromTo()` + `autoAlpha` for scroll reveals
+- Hero image reveal triggered via `onLoad` callback (waits for image to load)
+- Guard `gsap.registerPlugin()` with `typeof window !== 'undefined'` for SSR
+- Use `data-*` attributes for animation targets (not CSS classes — avoids conflicts)
+- Use `autoAlpha` instead of `opacity` (handles `visibility` too)
+- Avoid `transition-all` on animated elements — use specific properties (`transition-shadow`, `transition-transform`)
+
+**Images**: Unsplash (free commercial license), stored in `public/images/`
+
 ## Project Status
 
-**Current Phase**: Week 2 — Core Models & Auth (resumed March 2026)
+**Current Phase**: Week 3 complete, landing page done (March 2026)
 **References**: `PROJECT_PLAN.md` (implementation roadmap), `RESEARCH.md` (validated stack)
