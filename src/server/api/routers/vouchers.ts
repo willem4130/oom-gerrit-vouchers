@@ -120,6 +120,37 @@ export const vouchersRouter = createTRPCRouter({
       }
     }),
 
+  // Public: list all active vouchers with business info
+  listActive: publicProcedure.query(async ({ ctx }) => {
+    const vouchers = await ctx.db.voucher.findMany({
+      where: { status: 'ACTIVE' },
+      include: {
+        business: {
+          include: { businessCategories: { include: { category: true } } },
+        },
+      },
+      orderBy: { createdAt: 'desc' },
+    })
+    return vouchers.map((v) => ({
+      id: v.id,
+      title: v.title,
+      description: v.description,
+      discountType: v.discountType,
+      discountValue: v.discountValue,
+      discountDescription: v.discountDescription,
+      terms: v.terms,
+      slug: v.slug,
+      businessName: v.business.name,
+      businessId: v.business.id,
+      city: v.business.city,
+      categories: v.business.businessCategories.map((bc) => bc.category.slug),
+      maxClaims: v.maxClaims,
+      claimsCount: v.claimsCount,
+      startDate: v.startDate,
+      endDate: v.endDate,
+    }))
+  }),
+
   // Public: get voucher by ID
   getById: publicProcedure
     .input(z.object({ id: z.string() }))

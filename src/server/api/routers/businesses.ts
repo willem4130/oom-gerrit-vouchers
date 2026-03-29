@@ -73,6 +73,30 @@ export const businessesRouter = createTRPCRouter({
     return await useCase.execute({ by: 'userId', userId: ctx.session.user.id })
   }),
 
+  // Public: list all verified businesses with categories
+  listVerified: publicProcedure.query(async ({ ctx }) => {
+    const businesses = await ctx.db.business.findMany({
+      where: { status: 'VERIFIED' },
+      include: {
+        businessCategories: { include: { category: true } },
+        _count: { select: { vouchers: { where: { status: 'ACTIVE' } } } },
+      },
+      orderBy: { name: 'asc' },
+    })
+    return businesses.map((b) => ({
+      id: b.id,
+      name: b.name,
+      description: b.description,
+      city: b.city,
+      province: b.province,
+      phone: b.phone,
+      website: b.website,
+      categories: b.businessCategories.map((bc) => bc.category.slug),
+      categoryNames: b.businessCategories.map((bc) => bc.category.name),
+      activeVoucherCount: b._count.vouchers,
+    }))
+  }),
+
   getById: publicProcedure
     .input(z.object({ id: z.string() }))
     .query(async ({ input }) => {

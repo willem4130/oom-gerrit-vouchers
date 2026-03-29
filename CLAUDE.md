@@ -161,6 +161,28 @@ If changes require server restart:
 
 **Images**: Unsplash (free commercial license), stored in `public/images/`
 
+## Seed Data
+
+Realistic Achterhoek businesses in `prisma/seed-data/achterhoek.ts`:
+- 16 real businesses (restaurants, bars, wellness, accommodations, activities)
+- 47 vouchers with researched pricing from actual menus/websites
+- Cities: Winterswijk, Doetinchem, Zutphen, Groenlo, Ruurlo, Haarlo, Braamt, Laren
+- Re-seed: `npx tsx prisma/seed.ts` (clears and re-creates all data)
+
+## Dev Auth
+
+NextAuth is NOT wired yet. Dev auth bypass in `src/server/api/trpc.ts`:
+- Auto-logs in as first BUSINESS user (no header needed)
+- Override with `x-user-id` header to log in as specific user
+- Role checks (admin/business) are bypassed in `NODE_ENV=development`
+- All pages accessible without auth in dev mode
+
+## Branding
+
+- **Tagline**: "De beste tips van 't platteland"
+- **Region**: Achterhoek (Gelderland), not generic "platteland"
+- **Tone**: Warm, gezellig, "je/jij" — never corporate
+
 ## Project Status
 
 **Current Phase**: Week 3 complete, landing page done (March 2026)
