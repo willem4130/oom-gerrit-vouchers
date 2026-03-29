@@ -105,16 +105,30 @@ See `RESEARCH.md` for validated versions and configuration details.
 - tRPC routers → `src/server/api/routers/`, one per domain
 - Use cases → `src/application/use-cases/`, grouped by domain
 - Use case interface → `src/application/interfaces/IUseCase.ts`
-- Domain entities → `src/domain/entities/`
+- Domain entities → `src/domain/entities/` (Business, Voucher, VoucherClaim, Category)
 - Domain types → `src/domain/types/` (TransactionContext, PaginationOptions)
-- Repository interfaces → `src/domain/repositories/`
+- Value objects → `src/domain/value-objects/` (ClaimStatus, VoucherStatus, DiscountType, UserRole, BusinessStatus)
+- Repository interfaces → `src/domain/repositories/` (IVoucherRepository, IClaimRepository, IBusinessRepository)
 - Repository implementations → `src/infrastructure/repositories/`
 - Base repository → `src/infrastructure/repositories/BaseRepository.ts`
+- DI container → `src/infrastructure/config/container.ts`
 - Components → `src/components/`, organized by feature
 - UI components → `src/components/ui/` (shadcn)
 - Shared utilities → `src/lib/`
 - Static images → `public/images/`
+- Seed data → `prisma/seed-data/achterhoek.ts`
 - Database schema → `prisma/schema.prisma`
+
+### Page Routes
+
+- `/` — Landing page (all vouchers, businesses, category filters)
+- `/bon/[id]` — Voucher detail page (description, terms, claim CTA)
+- `/bedrijf/[id]` — Business detail page (info, contact, their vouchers)
+- `/register/business` — Business registration form
+- `/business/vouchers` — Business voucher management
+- `/business/vouchers/create` — Create voucher form
+- `/admin/businesses` — Admin business verification
+- `/admin/vouchers/pending` — Admin voucher approval
 
 ### Modularity Principles
 - Single responsibility per file
@@ -185,5 +199,6 @@ NextAuth is NOT wired yet. Dev auth bypass in `src/server/api/trpc.ts`:
 
 ## Project Status
 
-**Current Phase**: Week 3 complete, landing page done (March 2026)
+**Deployment**: Vercel (https://oomgerrit.vercel.app) + Neon Postgres (EU Frankfurt)
+**Current Phase**: Week 3 complete, landing page + detail pages done (March 2026)
 **References**: `PROJECT_PLAN.md` (implementation roadmap), `RESEARCH.md` (validated stack)

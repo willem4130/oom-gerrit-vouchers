@@ -26,6 +26,9 @@ import { GetBusinessProfileUseCase } from '@/application/use-cases/businesses/Ge
 // Category use cases
 import { ListCategoriesUseCase } from '@/application/use-cases/vouchers/ListCategoriesUseCase'
 
+// Claim use cases
+import { ClaimVoucherUseCase } from '@/application/use-cases/claims/ClaimVoucherUseCase'
+
 // Voucher use cases
 import { CreateVoucherUseCase } from '@/application/use-cases/vouchers/CreateVoucherUseCase'
 import { SubmitVoucherUseCase } from '@/application/use-cases/vouchers/SubmitVoucherUseCase'
@@ -81,6 +84,11 @@ export function createRejectVoucherUseCase() {
 }
 export function createListPendingVouchersUseCase() {
   return new ListPendingVouchersUseCase(voucherRepo)
+}
+
+// Claim use case factories
+export function createClaimVoucherUseCase() {
+  return new ClaimVoucherUseCase(claimRepo, voucherRepo, transactionManager)
 }
 
 // Transaction manager factory
