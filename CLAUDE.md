@@ -41,7 +41,7 @@ Presentation (app/, components/) → Server (tRPC routers) → Application (use 
 
 **Server** (`src/server/api/`) — Thin tRPC layer
 - Routers call use cases, nothing else
-- One router per domain (vouchers, claims, businesses, browse, recommendations, admin)
+- One router per domain (vouchers, claims, businesses, categories, users, auth)
 
 **Presentation** (`src/app/`, `src/components/`)
 - Next.js App Router pages — render only
@@ -106,10 +106,10 @@ See `RESEARCH.md` for validated versions and configuration details.
 - tRPC routers → `src/server/api/routers/`, one per domain
 - Use cases → `src/application/use-cases/`, grouped by domain
 - Use case interface → `src/application/interfaces/IUseCase.ts`
-- Domain entities → `src/domain/entities/` (Business, Voucher, VoucherClaim, Category)
+- Domain entities → `src/domain/entities/` (Business, Voucher, VoucherClaim, Category, User)
 - Domain types → `src/domain/types/` (TransactionContext, PaginationOptions)
 - Value objects → `src/domain/value-objects/` (ClaimStatus, VoucherStatus, DiscountType, UserRole, BusinessStatus)
-- Repository interfaces → `src/domain/repositories/` (IVoucherRepository, IClaimRepository, IBusinessRepository)
+- Repository interfaces → `src/domain/repositories/` (IVoucherRepository, IClaimRepository, IBusinessRepository, IUserRepository, ICategoryRepository)
 - Repository implementations → `src/infrastructure/repositories/`
 - Base repository → `src/infrastructure/repositories/BaseRepository.ts`
 - DI container → `src/infrastructure/config/container.ts`
@@ -123,7 +123,8 @@ See `RESEARCH.md` for validated versions and configuration details.
 ### Landing Page Components
 
 Modular components in `src/components/landing/`:
-- `navbar.tsx` — Sticky nav + mobile menu (uses navLinks from constants)
+- `navbar.tsx` — Sticky nav + mobile menu (uses navLinks from constants, UserMenu for auth)
+- `user-menu.tsx` — Auth-aware navbar component (login button or user dropdown with role-based links)
 - `hero-section.tsx` — GSAP-animated hero (self-contained useRef + useGSAP)
 - `how-it-works.tsx` — 3-step journey timeline with connecting lines
 - `featured-vouchers.tsx` — Voucher carousel (CSS scroll-snap) with category filters
@@ -164,10 +165,14 @@ Landing page (`src/app/page.tsx`) is a Server Component that prefetches tRPC dat
 - `/voor-ondernemers` — Business info/landing page (benefits, how it works, naoberschap)
 - `/bon/[id]` — Voucher detail page (full page for direct visits + claim flow)
 - `/bedrijf/[id]` — Business detail page (full page for direct visits)
+- `/inloggen` — Login page (tabs: credentials, magic link + Google button)
+- `/inloggen/verify-request` — Magic link "check your email" page
+- `/registreren` — Consumer registration (auto sign-in after register)
 - `/register/business` — Business registration form
 - `/business/vouchers` — Business voucher management
 - `/business/vouchers/create` — Create voucher form
 - `/admin/businesses` — Admin business verification
+- `/admin/users` — Admin user management
 - `/admin/vouchers/pending` — Admin voucher approval
 
 ### Modularity Principles
@@ -283,13 +288,34 @@ Realistic Achterhoek businesses in `prisma/seed-data/achterhoek.ts`:
 - Cities: Winterswijk, Doetinchem, Zutphen, Groenlo, Ruurlo, Haarlo, Braamt, Laren
 - Re-seed: `npx tsx prisma/seed.ts` (clears and re-creates all data)
 
-## Dev Auth
+## Authentication
 
-NextAuth is NOT wired yet. Dev auth bypass in `src/server/api/trpc.ts`:
-- Auto-logs in as first BUSINESS user (no header needed)
-- Override with `x-user-id` header to log in as specific user
-- Role checks (admin/business) are bypassed in `NODE_ENV=development`
-- All pages accessible without auth in dev mode
+NextAuth v5 with JWT session strategy. Three sign-in methods:
+
+1. **Credentials** (email + password) — bcrypt hashing, `ValidateCredentialsUseCase`
+2. **Magic link** (email) — Resend + react-email Dutch template, `VerificationToken` model
+3. **Google OAuth** — conditional, only active when `AUTH_GOOGLE_ID`/`AUTH_GOOGLE_SECRET` are set
+
+### Key files
+- `src/auth.ts` — NextAuth config (providers, JWT/session callbacks, PrismaAdapter)
+- `src/middleware.ts` — Protects `/admin/*`, `/business/*`; redirects to `/inloggen`
+- `src/types/next-auth.d.ts` — Session + JWT type augmentation (user.id, user.role)
+- `src/infrastructure/services/email/resend.ts` — Resend client (guarded, null if no API key)
+- `src/infrastructure/services/email/magic-link-email.tsx` — Magic link email template
+
+### tRPC procedure protection
+- `publicProcedure` — No auth required (browse, claim, register)
+- `protectedProcedure` — Requires authenticated session
+- `businessProcedure` — Requires BUSINESS role
+- `adminProcedure` — Requires ADMIN role
+- Role checks ALWAYS apply (no dev bypass)
+
+### Dev auth bypass
+In `NODE_ENV=development`, tRPC context uses `getDevSession()` instead of `auth()`:
+- Auto-logs in as first BUSINESS user from DB
+- Override with `x-user-id` header for specific user
+- Middleware allows all routes in dev (protection is in tRPC layer)
+- Role checks still enforced — dev session has a real role
 
 ## Branding
 
@@ -325,7 +351,9 @@ git push origin main → Vercel detects push → runs `npm run build` → deploy
 ### Vercel env vars (production)
 Managed in Vercel dashboard — never in code. Key vars:
 - `DATABASE_URL` / `DIRECT_URL` — Neon connection strings
-- `NEXTAUTH_SECRET` — Auth secret
+- `NEXTAUTH_SECRET` — Auth secret (min 32 chars)
+- `AUTH_GOOGLE_ID` / `AUTH_GOOGLE_SECRET` — Google OAuth (optional, Google sign-in disabled without these)
+- `RESEND_API_KEY` — Email sending (optional, magic links log to console without this)
 - `EMAIL_FROM` — Resend sender address
 
 ## Project Status
@@ -333,5 +361,5 @@ Managed in Vercel dashboard — never in code. Key vars:
 **GitHub**: https://github.com/willem4130/plattelandsbon
 **Vercel project**: `plattelandsbon` (owner: willem4130s-projects)
 **Production**: https://plattelandsbon.vercel.app
-**Current Phase**: Week 3 complete, landing page + detail pages done (March 2026)
+**Current Phase**: Week 3+ — landing page, detail pages, full auth (3 providers), wiring check fixes done (March 2026)
 **References**: `PROJECT_PLAN.md` (implementation roadmap), `RESEARCH.md` (validated stack)
